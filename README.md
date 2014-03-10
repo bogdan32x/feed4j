@@ -1,8 +1,3 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-</head>
-<body>
 <h1>Quickstart</h1>
 <p>In order to use the feed4j parser in your Java software, you have to make visible the <em>feed4j.jar</em> file to your application adding it to the CLASSPATH. Since the feed4j library depends on third parties jars (placed in the <em>lib</em> directory of the distribution package) you also have to add them to the CLASSPATH. </p>
 <h2>Requirements</h2>
@@ -92,5 +87,3 @@ try {
 	"http://www.mysite.org/myCustomTags", "phone-number"
 );</pre>
 <p>In the package <em>it.sauronsoftware.feed4j.bean</em> you can find the class <em>RawElement</em>, which is a raw informations container. Since <em>FeedHeader</em>, <em>FeedItem</em>, <em>FeedImage</em> and <em>FeedEnclosure</em> extend <em>RawElement</em> you can ever access raw data. So you will handle standard informations with structured methods like <em>getTitle()</em>, <em>getLink()</em> and <em>getPubDate()</em>, while  non-standard informations will be accessed in a raw way, with methods like <em>getElement()</em>, <em>getAttribute()</em> and <em>getNode()</em>. Please refer to the feed4j javadocs for a  complete features list.</p>
-</body>
-</html>
