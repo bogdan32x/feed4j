@@ -7,28 +7,37 @@ package it.sauronsoftware.feed4j.bean;
  */
 public class RawText implements RawNode {
 
-	/**
-	 * The text in the node.
-	 */
-	private String text;
+    /**
+     * The text in the node.
+     */
+    private String text;
 
-	/**
-	 * This method returns the text in the node.
-	 * 
-	 * @return The text in the node.
-	 */
-	public String getText() {
-		return text;
-	}
+    /**
+     * This method returns the text in the node.
+     * 
+     * @return The text in the node.
+     */
+    public String getText() {
+        return text;
+    }
 
-	/**
-	 * This method sets the text in the node.
-	 * 
-	 * @param text
-	 *            The text in the node.
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
+    /**
+     * This method sets the text in the node.
+     * 
+     * @param text
+     *            The text in the node.
+     */
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("RawText [text=");
+        builder.append(text);
+        builder.append("]");
+        return builder.toString();
+    }
 
 }
