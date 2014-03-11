@@ -14,37 +14,33 @@ import java.util.Locale;
  */
 class ISO8601DateFormat extends DateFormat {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private DateFormat[] formats = new DateFormat[] {
-			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
-			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
-			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US),
-			new SimpleDateFormat("yyyy-MM-dd", Locale.US) };
+    private DateFormat[] formats = new DateFormat[] { new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US), new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
+            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US), new SimpleDateFormat("yyyy-MM-dd", Locale.US) };
 
-	public Date parse(String source, ParsePosition pos) {
-		Date date = formats[0].parse(source, pos);
-		if (date != null) {
-			return date;
-		}
-		date = formats[1].parse(source, pos);
-		if (date != null) {
-			return date;
-		}
-		date = formats[2].parse(source, pos);
-		if (date != null) {
-			return date;
-		}
-		date = formats[3].parse(source, pos);
-		if (date != null) {
-			return date;
-		}
-		return null;
-	}
+    public Date parse(String source, ParsePosition pos) {
+        Date date = formats[0].parse(source, pos);
+        if (date != null) {
+            return date;
+        }
+        date = formats[1].parse(source, pos);
+        if (date != null) {
+            return date;
+        }
+        date = formats[2].parse(source, pos);
+        if (date != null) {
+            return date;
+        }
+        date = formats[3].parse(source, pos);
+        if (date != null) {
+            return date;
+        }
+        return null;
+    }
 
-	public StringBuffer format(Date date, StringBuffer toAppendTo,
-			FieldPosition fieldPosition) {
-		return formats[0].format(date, toAppendTo, fieldPosition);
-	}
+    public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition) {
+        return formats[0].format(date, toAppendTo, fieldPosition);
+    }
 
 }
