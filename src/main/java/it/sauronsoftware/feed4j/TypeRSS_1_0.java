@@ -30,9 +30,10 @@ class TypeRSS_1_0 extends TypeAbstract {
      *            The source URL for the feed.
      * @param document
      *            The dom4j Document representation of the XML representing the feed.
+     * @param feedSize
      * @return The Feed object representing the feed parsed contents.
      */
-    public static Feed feed(URL source, Document document) {
+    public static Feed feed(URL source, Document document, int maxSize) {
         // Root element.
         Element root = document.getRootElement();
         // Return value.
@@ -42,15 +43,17 @@ class TypeRSS_1_0 extends TypeAbstract {
         header.setURL(source);
         // Search for the "channel" and the "item" elements.
         Element channel = null;
+        int feedSize = 0;
         for (Iterator<Element> i = root.elementIterator(); i.hasNext();) {
             Element aux = i.next();
             String nsuri = aux.getNamespaceURI();
             if (nsuri.equals(Constants.RSS_1_0_NS_URI)) {
                 String name = aux.getName();
-                if (name.equals("item")) {
+                if (name.equals("item") && feedSize < maxSize) {
                     FeedItem item = handleItem(source, aux);
                     if (item != null) {
                         feed.addItem(item);
+                        feedSize++;
                     }
                 } else if (channel == null && name.equals("channel")) {
                     channel = aux;
@@ -85,7 +88,7 @@ class TypeRSS_1_0 extends TypeAbstract {
                             }
                         } else if (ensuri.equals(Constants.DC_NS_URI)) {
                             if (evalue != null) {
-                                if (ename.equals("date")) {
+                                if (ename.equals("date") || ename.equals("lastBuildDate")) {
                                     try {
                                         header.setPubDate(Constants.ISO_8601_DATE_FORMAT.parse(evalue));
                                     } catch (ParseException e) {
@@ -150,13 +153,13 @@ class TypeRSS_1_0 extends TypeAbstract {
                             } catch (MalformedURLException e) {
                                 ;
                             }
-                        } else if (ename.equals("description")) {
+                        } else if (ename.equals("description") && evalue.length() > 0) {
                             item.setDescriptionAsText(evalue);
                             item.setDescriptionAsHTML(HTMLFragmentHelper.fromTextPlainToHTML(evalue));
                         }
                     } else if (ensuri.equals(Constants.DC_NS_URI)) {
                         if (evalue != null) {
-                            if (ename.equals("date")) {
+                            if (ename.equals("date") || ename.equals("pubDate")) {
                                 try {
                                     item.setPubDate(Constants.ISO_8601_DATE_FORMAT.parse(evalue));
                                 } catch (ParseException e) {

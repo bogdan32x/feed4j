@@ -3,6 +3,8 @@ package it.sauronsoftware.feed4j.bean;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class is used to represent the items in a feed.
@@ -55,6 +57,11 @@ public class FeedItem extends RawElement {
      * The item enclosures list.
      */
     private ArrayList<FeedEnclosure> enclosures = null;
+
+    /**
+     * Feed item categories.
+     */
+    private Set<String> categories = new HashSet<String>();
 
     /**
      * This method returns the URL for the comments to the item. It could be null.
@@ -253,6 +260,26 @@ public class FeedItem extends RawElement {
      */
     public void setDescriptionAsText(String descriptionAsText) {
         this.descriptionAsText = descriptionAsText;
+    }
+
+    public ArrayList<FeedEnclosure> getEnclosures() {
+        return enclosures;
+    }
+
+    public void setEnclosures(ArrayList<FeedEnclosure> enclosures) {
+        this.enclosures = enclosures;
+    }
+
+    public Set<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<String> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(String category) {
+        this.categories.add(category);
     }
 
 }

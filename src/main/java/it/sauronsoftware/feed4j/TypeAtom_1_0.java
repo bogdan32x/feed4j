@@ -33,7 +33,7 @@ class TypeAtom_1_0 extends TypeAbstract {
      *            The dom4j Document representation of the XML representing the feed.
      * @return The Feed object representing the feed parsed contents.
      */
-    public static Feed feed(URL source, Document document) {
+    public static Feed feed(URL source, Document document, int maxSize) {
         // Get the root element.
         Element root = document.getRootElement();
         // Root element namespace URI.
@@ -50,6 +50,8 @@ class TypeAtom_1_0 extends TypeAbstract {
         if (language != null && isValidLanguageCode(language)) {
             header.setLanguage(language);
         }
+
+        int feedSize = 0;
         // Other interesting informations...
         for (int i = 0; i < header.getNodeCount(); i++) {
             RawNode node = header.getNode(i);
@@ -80,7 +82,7 @@ class TypeAtom_1_0 extends TypeAbstract {
                                 ;
                             }
                         }
-                    } else if (ename.equals("modified")) {
+                    } else if (ename.equals("modified") || ename.equals("lastBuildDate")) {
                         String modified = element.getValue();
                         if (modified != null) {
                             try {
@@ -89,10 +91,11 @@ class TypeAtom_1_0 extends TypeAbstract {
                                 ;
                             }
                         }
-                    } else if (ename.equals("entry")) {
+                    } else if (ename.equals("entry") && maxSize > feedSize) {
                         FeedItem item = handleEntry(source, element);
                         if (item != null) {
                             feed.addItem(item);
+                            feedSize++;
                         }
                     }
                 }
@@ -160,7 +163,7 @@ class TypeAtom_1_0 extends TypeAbstract {
                         if (aux != null) {
                             content = aux;
                         }
-                    } else if (ename.equals("issued")) {
+                    } else if (ename.equals("issued") || ename.equals("pubDate")) {
                         String modified = element.getValue();
                         if (modified != null) {
                             try {

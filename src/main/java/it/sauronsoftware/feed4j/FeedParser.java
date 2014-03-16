@@ -28,7 +28,7 @@ public class FeedParser {
      * @throws UnsupportedFeedException
      *             The XML retrieved does not represents a feed whose kind is known by the parser.
      */
-    public static Feed parse(URL url) throws FeedIOException, FeedXMLParseException, UnsupportedFeedException {
+    public static Feed parse(URL url, int feedSize) throws FeedIOException, FeedXMLParseException, UnsupportedFeedException {
         try {
             // Esegue il parsing iniziale del documento XML.
             SAXReader saxReader = new SAXReader();
@@ -37,13 +37,13 @@ public class FeedParser {
             int code = FeedRecognizer.recognizeFeed(document);
             switch (code) {
             case FeedRecognizer.RSS_1_0:
-                return TypeRSS_1_0.feed(url, document);
+                return TypeRSS_1_0.feed(url, document, feedSize);
             case FeedRecognizer.RSS_2_0:
-                return TypeRSS_2_0.feed(url, document);
+                return TypeRSS_2_0.feed(url, document, feedSize);
             case FeedRecognizer.ATOM_0_3:
-                return TypeAtom_0_3.feed(url, document);
+                return TypeAtom_0_3.feed(url, document, feedSize);
             case FeedRecognizer.ATOM_1_0:
-                return TypeAtom_1_0.feed(url, document);
+                return TypeAtom_1_0.feed(url, document, feedSize);
             default:
                 throw new UnsupportedFeedException();
             }

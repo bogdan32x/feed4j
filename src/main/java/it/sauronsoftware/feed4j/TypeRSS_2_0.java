@@ -13,6 +13,7 @@ import it.sauronsoftware.feed4j.html.HTMLOptimizer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Date;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -35,7 +36,7 @@ class TypeRSS_2_0 extends TypeAbstract {
      *            The dom4j Document representation of the XML representing the feed.
      * @return The Feed object representing the feed parsed contents.
      */
-    public static Feed feed(URL source, Document document) {
+    public static Feed feed(URL source, Document document, int maxSize) {
         // Root element.
         Element root = document.getRootElement();
         // Root element namespace URI.
@@ -51,10 +52,12 @@ class TypeRSS_2_0 extends TypeAbstract {
         if (channel != null) {
             // Header raw-population from "channel" element.
             populateRawElement(header, channel);
+
+            int feedSize = 0;
             // Search between the raw elements and build non-raw data.
             for (int i = 0; i < header.getNodeCount(); i++) {
                 RawNode node = header.getNode(i);
-                if (node instanceof RawElement) {
+                if (node instanceof RawElement && maxSize > feedSize) {
                     RawElement element = (RawElement) node;
                     String ensuri = element.getNamespaceURI();
                     String ename = element.getName();
@@ -72,7 +75,7 @@ class TypeRSS_2_0 extends TypeAbstract {
                                 } catch (MalformedURLException e) {
                                     ;
                                 }
-                            } else if (ename.equals("pubDate")) {
+                            } else if (ename.equals("pubDate") || ename.equals("lastBuildDate")) {
                                 try {
                                     header.setPubDate(Constants.RFC_822_DATE_FORMAT.parse(evalue));
                                 } catch (ParseException e) {
@@ -92,6 +95,7 @@ class TypeRSS_2_0 extends TypeAbstract {
                                 FeedItem item = handleItem(source, element);
                                 if (item != null) {
                                     feed.addItem(item);
+                                    feedSize++;
                                 }
                             } else if (ename.equals("image")) {
                                 // Channel image.
@@ -170,6 +174,16 @@ class TypeRSS_2_0 extends TypeAbstract {
                                 }
                             }
                             item.setGUID(evalue);
+                        } else if (ename.equals("pubDate")) {
+                            String pubDate = element.getValue();
+                            if (pubDate != null) {
+                                item.setPubDate(new Date(pubDate));
+                            }
+                        } else if (ename.equals("category")) {
+                            String category = element.getValue();
+                            if (category != null) {
+                                item.addCategory(category);
+                            }
                         }
                     }
                 } else {

@@ -192,7 +192,7 @@ public class RawElement implements RawNode {
             for (RawNode node : nodes) {
                 if (node instanceof RawElement) {
                     RawElement aux = (RawElement) node;
-                    if (aux.getNamespaceURI().equals(namespaceURI) && aux.getName().equals(name)) {
+                    if ((aux.getNamespaceURI().equals(namespaceURI) || namespaceURI == null) && aux.getName().equals(name)) {
                         list.add(aux);
                     }
                 }
@@ -204,6 +204,19 @@ public class RawElement implements RawNode {
             }
             return ret;
         }
+    }
+
+    /**
+     * This method returns a set of sub-elements.
+     * 
+     * @param namespaceURI
+     *            The namespace URI of the wanted elements.
+     * @param name
+     *            The name of the wanted elements.
+     * @return An array with the wanted elements. If no element is found, then a zero-size array is returned.
+     */
+    public RawElement[] getElements(String name) {
+        return getElements(null, name);
     }
 
     /**
