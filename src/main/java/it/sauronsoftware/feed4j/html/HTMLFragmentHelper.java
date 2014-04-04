@@ -68,7 +68,7 @@ public class HTMLFragmentHelper {
             }
         }
         String ret = buffer.toString();
-        return ret.replaceAll("\\s+", " ").trim();
+        return ret.replaceAll("\\s+", " ").replaceAll("\u00a0", "").trim();
     }
 
     /**
@@ -91,7 +91,7 @@ public class HTMLFragmentHelper {
             }
         }
         String ret = buffer.toString();
-        return ret.replaceAll("\\s+", " ").trim();
+        return ret.replaceAll("\\s+", " ").replaceAll("\u00a0","").trim();
     }
 
     /**
@@ -183,7 +183,7 @@ public class HTMLFragmentHelper {
             }
         }
         String ret = buffer.toString();
-        return ret.replaceAll("\\s+", " ").trim();
+        return ret.replaceAll("\\s+", " ").replaceAll("\u00a0","").trim();
     }
 
     private static String applBase(String name, String value, URL base) {
